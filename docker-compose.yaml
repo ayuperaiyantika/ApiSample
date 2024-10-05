@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  api_utility:
+    build:
+      context: .
+    container_name: calculator
+    restart: unless-stopped
+    ports:
+      - "9000:8000"
+    networks:
+      - calculator_api_dev
+
+networks:
+  calculator_api_dev:
+    driver: bridge  
