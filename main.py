@@ -20,9 +20,12 @@ class Numbers(BaseModel):
 def add_numbers(numbers: Numbers):
     result = numbers.a + numbers.b
 
-    
-    #jakarta_zone = timezone(timedelta(hours=7))
-    #jakarta_time = datetime.now(jakarta_zone)
-
     logger.info(f"Hit to /v1/add at {datetime.now()}")
     return {"result": result}
+
+
+
+@app.get("/testing/{angka}")
+async def test(angka: int):
+    answer = {'PangkatDua':angka**2} 
+    return answer
