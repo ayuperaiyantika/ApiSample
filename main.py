@@ -1,14 +1,16 @@
 import logging
-from fastapi import APIRouter
+from fastapi import FastAPI, APIRouter
 from pydantic import BaseModel
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
 # Inisialisasi logger
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
 
+# Add FastAPI
+app = FastAPI()
 
-app = APIRouter(prefix="/v1")
+router = APIRouter(prefix="/v1")
 
 # Definisikan model data untuk request body
 class Numbers(BaseModel):
@@ -16,16 +18,16 @@ class Numbers(BaseModel):
     b: int
 
 # Endpoint untuk melakukan penjumlahan dengan method POST
-@app.post("/add")
+@router.post("/add")
 def add_numbers(numbers: Numbers):
-    result = numbers.a + numbers.b
-
+    result = int(numbers.a + numbers.b)
     logger.info(f"Hit to /v1/add at {datetime.now()}")
     return {"result": result}
 
-
-
-@app.get("/testing/{angka}")
+# Endpoint untuk menguji pangkat dua dengan method GET
+@router.get("/testing/{angka}")
 async def test(angka: int):
-    answer = {'PangkatDua':angka**2} 
+    answer = {'PangkatDua': float(angka**2)} 
     return answer
+
+app.include_router(router)
